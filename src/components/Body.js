@@ -5,7 +5,12 @@ import {useNavigate, Link, useLocation} from 'react-router-dom'
 
 import { Player } from '@lottiefiles/react-lottie-player';
 import loader from '../assets/json/globeLoader.json'
+
+import useAutoLogout from "./IdleTimeout";
+
+
 export const Body = () =>{
+    let videoBg = './static-video.mp4'
     const [orderNumber, setOrderNumber] = useState('')
     const [loaderAnimation, setLoader] = useState('')
     const APIUrl = 'https://globe-api.onrender.com/api/getAll/transNumber/'
@@ -15,13 +20,10 @@ export const Body = () =>{
     const navigate = useNavigate()
 
     const location = useLocation()
-    /*const data = location.state.message
-    if(data != null){
-        data = location.state.message
-    }
-    else{
-        data =""
-    }*/
+
+    const delay = 5;
+    let timer = useAutoLogout(3);
+  
         const postData = () => {
         document.getElementById('enter-btn').classList.add('hidden')
         document.getElementById('lottie').classList.remove('hidden')
@@ -132,6 +134,17 @@ export const Body = () =>{
                     </div>
                     
                 </div>
+                {
+                    (() => {
+                        if(timer == 0) {
+                            const timerChuva = <video autoPlay muted loop id="videoBg">
+                                <source src={videoBg} type="video/mp4" />
+                            </video>
+                            return timerChuva
+                        }   
+                    })()  
+                }  
+                
 
             </div>
         </div>

@@ -12,7 +12,11 @@
 }
 
 html, body {
-    font-family: FSElliotPro !important;    
+    font-family: FSElliotPro !important;   
+    background-color: #2e3992; 
+}
+.App {
+    background-color: #2e3992 !important;
 }
 .hidden{
     display: none;

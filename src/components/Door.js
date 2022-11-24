@@ -127,28 +127,10 @@ export const Door = () =>{
     return (
         <>
         <div className="container">
-            <video autoPlay muted loop id="videoBg">
-                <source src={videoBg} type="video/mp4" />
-            </video>
+           
             
-            <div className="row">
-                <div className="panel panel-default mt-5 w-50 mx-auto rounded-big">
-                        <div className="panel-body p-3">
-                            
-                            <div className="d-flex justify-content-around align-items-center">
-                                <div className="globeLogo">
-                                    <img src={globeLogo} />
-                                </div>
-                                <div className="easyHub">
-                                    <img src={easyHub} />
-                                </div>
-                            </div>
-                            
-                        </div>
-
-                    </div>
-                </div>
-                <div className="col-md-12 col-sm-12">
+            
+                <div className="col-md-12 col-sm-12 body-wrapper">
                     <div className="panel panel-default mt-5 w-50 mx-auto rounded-big">
                     <div><img src={doorStatusOpen} className="locker-door" /></div>
                         <div className="panel-body p-3 panel-locker">

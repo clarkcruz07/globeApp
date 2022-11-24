@@ -7,6 +7,7 @@ import Doors from './components/Door'
 import Trial from './components/Trial'
 import 'bootstrap/dist/css/bootstrap.css'
 function App() {
+  window. oncontextmenu = function(event) { event. preventDefault(); event. stopPropagation(); return false; };
   return (
     <div className="App">
       <Router>

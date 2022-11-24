@@ -99,6 +99,7 @@ export const Body = () =>{
 
     return (
     <>
+    <div className="col-md-12 body-wrapper">
         <div className="col-md-12 col-sm-12">
             <div className="panel panel-default mt-5 w-100 mx-auto rounded-big">
                 <div className="panel-body p-3">
@@ -133,6 +134,7 @@ export const Body = () =>{
                 </div>
 
             </div>
+        </div>
     </div>
     </>
     )

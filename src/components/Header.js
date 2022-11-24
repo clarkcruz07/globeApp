@@ -11,7 +11,7 @@ export const Header = () =>{
             <div className="panel panel-default mt-5 w-100 mx-auto rounded-big">
                 <div className="panel-body p-3">
                     
-                    <div className="d-flex justify-content-around align-items-center">
+                    <div className="d-flex justify-content-between align-items-center">
                         <div className="globeLogo">
                             <img src={globeLogo} />
                         </div>

@@ -11,12 +11,12 @@ const IdleTimeout = (startTime) => {
       setTimer(startTime);
     };
     const events = [
-      /*"load",
-      "mousemove",
+      "load",
+      /*"mousemove",
       "mousedown",*/
-      "click"
-      /*"scroll",
-      "keypress"*/
+      "click",
+      "scroll",
+      "keypress"
     ];
     for (let i in events) {
       window.addEventListener(events[i], resetTimeout);

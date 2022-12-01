@@ -22,7 +22,7 @@ export const Door = () =>{
     const qPin = location.state.qpin
     const doorStatusAPI = doorURL + dataDoorNumber + "/status"
     const [disable, setDisable] = useState(true)
-    const delay = 5;
+    let delay = '';
     const [doorStatusOpen, setDoor] = useState(doorOpen)
     
     const videoBg = './globeGradientBG.mp4'
@@ -59,8 +59,11 @@ export const Door = () =>{
         else{
             axios
             .get(doorURL + dataDoorNumber + "/open").then(res => {
-                console.log('door open')
                 
+                if(dataTransStatus == 1){
+                    document.getElementById('lockbtn').classList.add('opacity')
+                    document.getElementById('lockbtn').disabled = true
+                }
             })
             .catch(error => {
                 console.log(error.message)
@@ -87,17 +90,21 @@ export const Door = () =>{
         axios.get(doorAPI).then(res => {
             const doorStatus = res.data.data.doorStatus
             //
-            const trigger = document.getElementById('videoBg')
-            if(doorStatus == 'close'){
-                setTimer(res.data.data.doorStatus)    
-                setDoor(doorClose)
-                document.getElementById('reopen').disable = false
-                document.getElementById('reopen').classList.remove('opacity')
-              
+            const trigger = document.getElementById('cont')
+            if(doorStatus == 'open'){
+                document.getElementById('lockbtn').classList.add('opacity')
+                document.getElementById('lockbtn').disabled = true
+                document.getElementById('door-image').style.paddingLeft = '1rem'
+                trigger.click() 
             }
             else{
-                console.log('opened door')
-                trigger.click()  
+                document.getElementById('reopen').disable = false
+                document.getElementById('reopen').classList.remove('opacity')
+
+                document.getElementById('lockbtn').classList.remove('opacity')
+                document.getElementById('lockbtn').disabled = false
+                setTimer(res.data.data.doorStatus) 
+                setDoor(doorClose)
             }
             
             
@@ -113,43 +120,43 @@ export const Door = () =>{
            
             const dataInterval = setInterval(()=> {
                 fetchStatus()
-            },1000)
-
-            console.log(timerData)
+            },500)
+            
             return () => clearInterval(dataInterval)
             
           
     },[])
+
+    
  /* set idle timeout */
  
  
 
     return (
         <>
-        <div className="container">
+        <div className="container" id="cont">
            
             
             
                 <div className="col-md-12 col-sm-12 body-wrapper">
                     <div className="panel panel-default mt-5 w-50 mx-auto rounded-big">
-                    <div><img src={doorStatusOpen} className="locker-door" /></div>
+                    <div><img src={doorStatusOpen} className="locker-door" id='door-image' /></div>
                         <div className="panel-body p-3 panel-locker">
-                            
-                            
+                         
                             <div><img src={reopenBtn} disabled={disable} className="opacity" id="reopen" onClick={postData} /></div>
-                            <div><img src={lockBtn} onClick={updateStatus}/></div>
+                            <div><img src={lockBtn}  onClick={updateStatus} id="lockbtn" /></div>
                             
                         </div>
                         <div>
                            <span className="text-light">
-                           {
+                             {
                                 (() => {
                                     if(timerData == 'close' && timer < 31) {
                                         const timerChuva = <div><h3>Door locking in {timer} seconds.</h3></div>
                                         return timerChuva
                                     }   
                                 })()  
-                            }  
+                            } 
                             </span>
                         </div>
                     </div>

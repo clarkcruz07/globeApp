@@ -22,7 +22,7 @@ export const Body = () =>{
     const location = useLocation()
 
     const delay = 5;
-    let timer = useAutoLogout(3);
+    let timer = useAutoLogout(32);
   
         const postData = () => {
         document.getElementById('enter-btn').classList.add('hidden')

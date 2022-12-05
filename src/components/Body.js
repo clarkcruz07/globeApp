@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState, useRef} from 'react'
 import Button from '../assets/img/enterBtn.svg'
 import axios from 'axios'
 import {useNavigate, Link, useLocation} from 'react-router-dom'
@@ -20,11 +20,11 @@ export const Body = () =>{
     const navigate = useNavigate()
 
     const location = useLocation()
-
+    const numberorder = useRef(null);
     const delay = 5;
     let timer = useAutoLogout(32);
   
-        const postData = () => {
+        const postData = (orderNumber) => {
         document.getElementById('enter-btn').classList.add('hidden')
         document.getElementById('lottie').classList.remove('hidden')
         
@@ -93,11 +93,28 @@ export const Body = () =>{
                 //
         });
     }
+  
+ 
+    useEffect(() => {
+        if (numberorder.current) {
+            numberorder.current.focus();
+          }
+         
+          
+    },[])
+    const handlePaste = e => {
+        //postData(event.clipboardData.getData('text'));
+        console.log(e.clipboardData.getData('text'))
+        postData(e.clipboardData.getData('text'))
+      };
     useEffect(() => {
         
+        window.addEventListener('paste', handlePaste); 
+        return () => {
+           window.removeEventListener('paste', handlePaste);
+         };
         
-    },[])
-
+    })
 
     return (
     <>
@@ -108,7 +125,7 @@ export const Body = () =>{
                     
                     <div className="d-flex justify-content-around align-items-center pr-2 flex-wrap">
                         
-                        <input type="text" className="txt-pin text-uppercase" placeholder='Enter quickpin' maxLength="16" onChange={(e) => setOrderNumber(e.target.value.toUpperCase())} />
+                        <input type="text" className="txt-pin text-uppercase" placeholder='Enter quickpin' maxLength="16" onChange={(e) => setOrderNumber(e.target.value.toUpperCase())} ref={numberorder} id="quickpin" autoComplete="no" onPaste={handlePaste} />
                         <div className="txt-error position-absolute">{error}</div>
                     </div>
                     
@@ -123,7 +140,7 @@ export const Body = () =>{
                     
                     <div className="d-flex justify-content-around align-items-center enter-btn">
                         
-                        <img src={Button} onClick={postData} id="enter-btn" />
+                        <img src={Button} onClick={(e) => postData(document.getElementById('quickpin').value)} id="enter-btn" />
                         <div id="lottie" className="hidden">
                         <Player 
                         src={loader}

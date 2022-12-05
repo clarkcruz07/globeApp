@@ -154,7 +154,7 @@ export const Body = () =>{
                 {
                     (() => {
                         if(timer == 0) {
-                            const timerChuva = <video autoPlay muted loop id="videoBg">
+                            const timerChuva = <video autoPlay loop id="videoBg">
                                 <source src={videoBg} type="video/mp4" />
                             </video>
                             return timerChuva

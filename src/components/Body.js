@@ -17,13 +17,15 @@ export const Body = () =>{
     const doorURL = 'http://localhost:9090/api/lockercontroller/door/'
 
     const [error, setError] = useState('')
+    const [disabled, setDisable] = useState(false)
     const navigate = useNavigate()
 
     const location = useLocation()
     const numberorder = useRef(null);
     const delay = 5;
+    let dataFocus = "" 
     let timer = useAutoLogout(32);
-  
+    const [checker, setChecker] = useState(0)
         const postData = () => {
         document.getElementById('enter-btn').classList.add('hidden')
         document.getElementById('lottie').classList.remove('hidden')
@@ -167,21 +169,27 @@ export const Body = () =>{
         if (numberorder.current) {
             numberorder.current.focus();
           }
-         
-        
-    },[])
-
-    useEffect(() => {
-       
-       
-        const dataFocus = setInterval(()=> {
+          const dataFocus = setInterval(()=> {
             document.getElementById('quickpin').focus()
         },500)
+    },[])
+
+    const onclick = (number) => {
         
-        if(orderNumber.length > 11) {
-            postData(orderNumber)
-        }  
-   
+        document.getElementById('quickpin').focus()
+        
+        setChecker(number)
+
+    }
+    
+    useEffect(() => {
+      
+      if(checker == 0){
+        if(document.getElementById('quickpin').value.length > 11) {
+            postData(document.getElementById('quickpin').value)
+
+        } 
+      } 
         
     })
 
@@ -194,7 +202,7 @@ export const Body = () =>{
                     
                     <div className="d-flex justify-content-around align-items-center pr-2 flex-wrap">
                         
-                        <input type="text" className="txt-pin text-uppercase" placeholder='Enter quickpin' maxLength="16" onChange={(e) => setOrderNumber(e.target.value.toUpperCase())} ref={numberorder} id="quickpin"  />
+                        <input type="text" className="txt-pin text-uppercase" placeholder='Enter quickpin' maxLength="16" onChange={(e) => setOrderNumber(e.target.value.toUpperCase())} onClick={() => onclick(1)} ref={numberorder} autoComplete='off' id="quickpin" />
                         <div className="txt-error position-absolute">{error}</div>
                     </div>
                     

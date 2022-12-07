@@ -23,7 +23,7 @@ export const Door = () =>{
     const doorStatusAPI = doorURL + dataDoorNumber + "/status"
     const [disable, setDisable] = useState(true)
     let delay = '';
-    const [doorStatusOpen, setDoor] = useState(doorOpen)
+    const [doorStatusOpen, setDoor] = useState('')
     
     const videoBg = './globeGradientBG.mp4'
     let timer = useAutoLogout(32);
@@ -36,7 +36,7 @@ export const Door = () =>{
         if(dataTransStatus == 1){
             status = "2"
         }
-        else if(dataTransStatus == 2){
+        else if(dataTransStatus == 2 || dataTransStatus == 5){
             status = "3"
         }
 
@@ -45,8 +45,7 @@ export const Door = () =>{
             mobileNumber: dataMobileNumber,
             doorSize: dataDoorSize,
             doorNumber: dataDoorNumber
-        }).then(resp => {                   
-            console.log('status updated')
+        }).then(resp => {             
             navigate('/')
         }).catch(error => {
             console.log(error);
@@ -59,11 +58,7 @@ export const Door = () =>{
         else{
             axios
             .get(doorURL + dataDoorNumber + "/open").then(res => {
-                
-                if(dataTransStatus == 1){
-                    document.getElementById('lockbtn').classList.add('opacity')
-                    document.getElementById('lockbtn').disabled = true
-                }
+             
             })
             .catch(error => {
                 console.log(error.message)
@@ -75,9 +70,7 @@ export const Door = () =>{
     const postData = () => {
         axios
         .get(doorURL + dataDoorNumber + "/open").then(res => {
-            setDoor(doorOpen)
-            document.getElementById('reopen').disable = true
-            document.getElementById('reopen').classList.add('opacity')
+            setDoor('open')
             
         })
         .catch(error => {
@@ -92,19 +85,13 @@ export const Door = () =>{
             //
             const trigger = document.getElementById('cont')
             if(doorStatus == 'open'){
-                document.getElementById('lockbtn').classList.add('opacity')
-                document.getElementById('lockbtn').disabled = true
-                document.getElementById('door-image').style.paddingLeft = '1rem'
+                setDoor('open')
                 trigger.click() 
             }
             else{
-                document.getElementById('reopen').disable = false
-                document.getElementById('reopen').classList.remove('opacity')
-
-                document.getElementById('lockbtn').classList.remove('opacity')
-                document.getElementById('lockbtn').disabled = false
+                setDoor('close')
                 setTimer(res.data.data.doorStatus) 
-                setDoor(doorClose)
+               
             }
             
             
@@ -126,8 +113,6 @@ export const Door = () =>{
             
           
     },[])
-
-    
  /* set idle timeout */
  
  
@@ -140,11 +125,42 @@ export const Door = () =>{
             
                 <div className="col-md-12 col-sm-12 body-wrapper">
                     <div className="panel panel-default mt-5 w-50 mx-auto rounded-big">
-                    <div><img src={doorStatusOpen} className="locker-door" id='door-image' /></div>
+                    <div>
+                        {
+                            (() => {
+                                if(doorStatusOpen == 'open') {
+                                    const timerChuva = <img src={doorOpen} className="locker-door" id='door-image' />
+                                    return timerChuva
+                                }   
+                                else if(doorStatusOpen == 'close'){
+                                    const timerChuva = <img src={doorClose} className="locker-door" id='door-image' />
+                                    return timerChuva
+                                }
+                            })()  
+                        } 
+                        
+                        
+                        </div>
                         <div className="panel-body p-3 panel-locker">
-                         
-                            <div><img src={reopenBtn} disabled={disable} className="opacity" id="reopen" onClick={postData} /></div>
-                            <div><img src={lockBtn}  onClick={updateStatus} id="lockbtn" /></div>
+                        
+                        {
+                            (() => {
+                                if(doorStatusOpen == 'open') {
+                                    const door_status = <div>
+                                        <div className="py-3"><img src={reopenBtn} disabled={true} className="opacity" id="reopen" onClick={postData} /></div>
+                                        <div className="py-3"><img src={lockBtn}  disabled={true} className="opacity" onClick={updateStatus} id="lockbtn" /></div>
+                                        </div>
+                                    return door_status
+                                }   
+                                else if(doorStatusOpen == 'close'){
+                                    const door_status = <div>
+                                        <div className="py-3"><img src={reopenBtn} id="reopen" onClick={postData} /></div>
+                                        <div className="py-3"><img src={lockBtn} onClick={updateStatus} id="lockbtn" /></div>
+                                    </div>
+                                return door_status
+                                }
+                            })()  
+                        } 
                             
                         </div>
                         <div>

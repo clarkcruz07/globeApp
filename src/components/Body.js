@@ -109,6 +109,7 @@ export const Body = () =>{
             document.getElementById('quickpin').focus()
         },500)
 
+        return clearInterval(dataFocus)
 
     },[])
 
